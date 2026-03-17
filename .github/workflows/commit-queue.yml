@@ -30,6 +30,11 @@ jobs:
     outputs:
       numbers: ${{ steps.get_mergeable_prs.outputs.numbers }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Get Pull Requests
         id: get_mergeable_prs
         run: |
@@ -59,6 +64,11 @@ jobs:
     if: needs.get_mergeable_prs.outputs.numbers != ''
     runs-on: ubuntu-slim
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           # A personal token is required because pushing with GITHUB_TOKEN will

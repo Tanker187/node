@@ -18,6 +18,11 @@ jobs:
     if: github.repository == 'nodejs/node'
     runs-on: ubuntu-slim
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Trigger update-links workflow on nodejs/release-cloudflare-worker
         run: |
           gh workflow run update-links.yml --repo nodejs/release-cloudflare-worker

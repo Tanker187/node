@@ -25,6 +25,11 @@ jobs:
     outputs:
       matrix: ${{ steps.query.outputs.matrix }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - id: query
         run: |
           matrix=$(curl -s https://raw.githubusercontent.com/nodejs/Release/refs/heads/main/schedule.json | jq -c --arg now "$(date +%Y-%m-%d)" '[with_entries(select(.value.end > $now and .value.start < $now)) | keys[] | ltrimstr("v") | tonumber] + ["latest-nightly"]')
@@ -38,6 +43,11 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-24.04-arm
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
         with:

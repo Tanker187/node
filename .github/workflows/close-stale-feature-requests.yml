@@ -41,6 +41,11 @@ jobs:
     if: github.repository == 'nodejs/node'
     runs-on: ubuntu-slim
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f  # v10.2.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
