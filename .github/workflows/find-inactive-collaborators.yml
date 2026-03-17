@@ -19,6 +19,11 @@ jobs:
     runs-on: ubuntu-slim
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           fetch-depth: 0
@@ -33,7 +38,7 @@ jobs:
         run: tools/find-inactive-collaborators.mjs
 
       - name: Open pull request
-        uses: gr2m/create-or-update-pull-request-action@77596e3166f328b24613f7082ab30bf2d93079d5
+        uses: step-security/create-or-update-pull-request-action@73d8256e5ebf93a2acdb68557bd1a98ea57e52cc # v1.10.2
         # Creates a PR or update the Action's existing PR, or
         # no-op if the base branch is already up-to-date.
         env:
